@@ -20,6 +20,12 @@ class Welcome extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('welcome_message');
+		//$this->load->view('welcome_message');
+		$query = $this->dp->get('employees');
+		foreach ($query->results() as $row)
+		{
+			echo $row->first_name;
+			echo "\n";
+		}
 	}
 }
