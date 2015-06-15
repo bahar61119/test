@@ -151,7 +151,8 @@ class Welcome extends CI_Controller {
             $value = "value";
 
             
-            if(count($data->results->bindings)==1) $answer.= $data->results->bindings[0]->$target->$value;
+            if(count($data->results->bindings)==0) $answer = "Your majesty! Jon Snow knows nothing! So do I!";
+            else if(count($data->results->bindings)==1) $answer.= $data->results->bindings[0]->$target->$value;
             else
             {
                 //echo print_r($data->results->bindings);
@@ -164,7 +165,10 @@ class Welcome extends CI_Controller {
                         $flag = false;
                     }
                 }
-                if($flag) $answer.= $data->results->bindings[0]->$target->$value;
+                if($flag) 
+                {
+                    $answer.= $data->results->bindings[0]->$target->$value;
+                }
             }
         }
         
