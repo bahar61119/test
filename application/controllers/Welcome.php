@@ -127,21 +127,20 @@ class Welcome extends CI_Controller {
         
         $url="http://quepy.machinalis.com/engine/get_query?question=".$question;
         $json=file_get_contents($url);
+        
+        $answer = "";
         // echo $json;
         $data = json_decode($json);
         //echo $data->queries[0]->query;
         $query = urlencode($data->queries[0]->query);
-        $target = trim($data->queries[0]->target,'?');
-        //echo $target.'</br>';
-        //echo $query;
-        
-        $url = "http://dbpedia.org/sparql?query=".$query."&format=json";
-        $json=file_get_contents($url);
-        
-        if($json==NULL) $answer = "Your majesty! Jon Snow knows nothing! So do I!";
+        if($query==null) $answer = "Your majesty! Jon Snow knows nothing! So do I!";
         else {
-        
-            $answer = "";
+            $target = trim($data->queries[0]->target,'?');
+            //echo $target.'</br>';
+            //echo $query;
+
+            $url = "http://dbpedia.org/sparql?query=".$query."&format=json";
+            $json=file_get_contents($url);
 
             $data = json_decode($json);
             //echo print_r($data->results->bindings);
