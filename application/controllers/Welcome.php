@@ -65,6 +65,8 @@ class Welcome extends CI_Controller {
             $city.=$str[$i]." ";
         }
         
+        $city = urlencode($city);
+        
         //$country="IN"; //Two digit country code
         $url="http://api.openweathermap.org/data/2.5/weather?q=".$city;
         
@@ -117,6 +119,61 @@ class Welcome extends CI_Controller {
         
 	echo $response;
   
+    }
+    
+    function qa()
+    {
+        $question = urlencode($this->input->get('q'));
+        
+        $url="http://quepy.machinalis.com/engine/get_query?question=".$question;
+        $json=file_get_contents($url);
+        // echo $json;
+        $data = json_decode($json);
+        //echo $data->queries[0]->query;
+        $query = urlencode($data->queries[0]->query);
+        $target = trim($data->queries[0]->target,'?');
+        //echo $target.'</br>';
+        //echo $query;
+        
+        $url = "http://dbpedia.org/sparql?query=".$query."&format=json";
+        $json=file_get_contents($url);
+        
+        if($json==NULL) $answer = "Your majesty! Jon Snow knows nothing! So do I!";
+        else {
+        
+            $answer = "";
+
+            $data = json_decode($json);
+            //echo print_r($data->results->bindings);
+
+            $lang = "xml:lang";
+
+            //if(isset($data->results->bindings[0]->$target->$lang)) echo $data->results->bindings[0]->$target->$lang;
+            $value = "value";
+
+            
+            if(count($data->results->bindings)==1) $answer.= $data->results->bindings[0]->$target->$value;
+            else
+            {
+                //echo print_r($data->results->bindings);
+                $flag = true;
+                foreach($data->results->bindings as $row)
+                {
+                    if(isset($row->$target->$lang) && $row->$target->$lang=="en") 
+                    {
+                        $answer.= $row->$target->$value;
+                        $flag = false;
+                    }
+                }
+                if($flag) $answer.= $data->results->bindings[0]->$target->$value;
+            }
+        }
+        
+        $d['answer']= $answer;
+	$response = json_encode($d);
+        
+	echo $response;
+        
     }
 
     
