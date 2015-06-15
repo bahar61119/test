@@ -16,8 +16,11 @@ class Welcome extends CI_Controller {
         $question = $this->input->get('q');
                 
         $data = preg_split("/[\s,]+/    ",  $question);
-		
-	$response = "Hello, Kitty! ".;
+	
+        $this->db->where('question', $question);
+        $q = $this->db->get('greetings');
+        
+	$response = "Hello, Kitty! ";
         
         
 	echo $response;
