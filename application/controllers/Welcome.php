@@ -1,31 +1,30 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+
+require(APPPATH . '/libraries/REST_Controller.php');
 
 class Welcome extends CI_Controller {
 
-	/**
-	 * Index Page for this controller.
-	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/welcome
-	 *	- or -
-	 * 		http://example.com/index.php/welcome/index
-	 *	- or -
-	 * Since this controller is set as the default controller in
-	 * config/routes.php, it's displayed at http://example.com/
-	 *
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
-	 * @see http://codeigniter.com/user_guide/general/urls.html
-	 */
-	public function index()
-	{
-		//$this->load->view('welcome_message');
-		$query = $this->db->get('employees');
-		foreach ($query->result() as $row)
-		{
-			echo $row->first_name;
-			echo "\n";
-		}
+    function index() {
+        $data['answer'] = 'Hello, Kitty! rest_of_your_answer';
+		
+		$response = json_encode($data);
+		echo $response;
+    }
+    
+    function greetings()
+    {
+        $question = $this->input->get('q');
+                
+        $data = preg_split("/[\s,]+/    ",  $question);
+		
+	$response = "Hello, Kitty! ".;
+        
+        
+	echo $response;
+        
 	}
+
+    
+
 }
+

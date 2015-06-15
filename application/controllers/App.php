@@ -2,7 +2,7 @@
 
 require(APPPATH . '/libraries/REST_Controller.php');
 
-class Rest_app extends REST_Controller {
+class App extends REST_Controller {
 
     function index() {
         $this->response(array('name' => 'magi'));

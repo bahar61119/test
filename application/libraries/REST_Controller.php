@@ -556,63 +556,6 @@ abstract class REST_Controller extends CI_Controller
      */
     protected function _detect_output_format()
     {
-        $pattern = '/\.('.implode('|', array_keys($this->_supported_formats)).')$/';
-
-        // Check if a file extension is used when no get arguments provided
-        $matches = array();
-        if (!$this->_get_args and preg_match($pattern, $this->uri->uri_string(), $matches)) {
-            return $matches[1];
-        }
-
-        // Check if a file extension is used
-        elseif ($this->_get_args and !is_array(end($this->_get_args)) and preg_match($pattern, end($this->_get_args), $matches)) {
-            // The key of the last argument
-            $last_key = end(array_keys($this->_get_args));
-
-            // Remove the extension from arguments too
-            $this->_get_args[$last_key] = preg_replace($pattern, '', $this->_get_args[$last_key]);
-            $this->_args[$last_key]     = preg_replace($pattern, '', $this->_args[$last_key]);
-
-            return $matches[1];
-        }
-
-        // A format has been passed as an argument in the URL and it is supported
-        if (isset($this->_get_args['format']) and array_key_exists($this->_get_args['format'], $this->_supported_formats)) {
-            return $this->_get_args['format'];
-        }
-
-        // Otherwise, check the HTTP_ACCEPT (if it exists and we are allowed)
-        if ($this->config->item('rest_ignore_http_accept') === false and $this->input->server('HTTP_ACCEPT')) {
-            // Check all formats against the HTTP_ACCEPT header
-            foreach (array_keys($this->_supported_formats) as $format) {
-                // Has this format been requested?
-                if (strpos($this->input->server('HTTP_ACCEPT'), $format) !== false) {
-                    // If not HTML or XML assume its right and send it on its way
-                    if ($format != 'html' and $format != 'xml') {
-                        return $format;
-                    }
-
-                    // HTML or XML have shown up as a match
-                    else {
-                        // If it is truly HTML, it wont want any XML
-                        if ($format == 'html' and strpos($this->input->server('HTTP_ACCEPT'), 'xml') === false) {
-                            return $format;
-                        }
-
-                        // If it is truly XML, it wont want any HTML
-                        elseif ($format == 'xml' and strpos($this->input->server('HTTP_ACCEPT'), 'html') === false) {
-                            return $format;
-                        }
-                    }
-                }
-            }
-        } // End HTTP_ACCEPT checking
-
-        // Well, none of that has worked! Let's see if the controller has a default
-        if ( ! empty($this->rest_format)) {
-            return $this->rest_format;
-        }
-
         // Just use the default format
         return config_item('rest_default_format');
     }
