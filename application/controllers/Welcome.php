@@ -18,8 +18,9 @@ class Welcome extends CI_Controller {
         $str = preg_split("/[\s,]+/",  $question);
         //echo $str[0];  
   
-        $this->db->where('question', $question);
+        $this->db->where('question',  $this->db->escape($question));
         $q = $this->db->get('greetings');
+        //echo print_r($q->result_array());
         $answer = "";
         if ($q->num_rows()) {
             foreach($q->result_array() as $r)
