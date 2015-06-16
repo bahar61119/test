@@ -4,10 +4,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Welcome extends CI_Controller {
 
     function index() {
-        $data['answer'] = 'Hello, Kitty! rest_of_your_answer';
-		
-		$response = json_encode($data);
-		echo $response;
+        $data = 'Hello, Kitty!'."</br>";
+        echo $data;
+        $data = "Link: https://mighty-caverns-3903.herokuapp.com/index.php/welcome/TARGET?q=QUESTION?</br>";
+        echo $data;
+        $data = "TARGET = greetings/weather/qa";
+	echo $data;
     }
     
     function greetings()
