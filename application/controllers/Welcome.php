@@ -1,7 +1,6 @@
 <?php
 
-require(APPPATH . '/libraries/REST_Controller.php');
-
+defined('BASEPATH') OR exit('No direct script access allowed');
 class Welcome extends CI_Controller {
 
     function index() {
@@ -18,7 +17,7 @@ class Welcome extends CI_Controller {
         $str = preg_split("/[\s,]+/",  $question);
         //echo $str[0];  
   
-        $this->db->where('question',  $this->db->escape($question));
+        $this->db->where('question',  $question);
         $q = $this->db->get('greetings');
         //echo print_r($q->result_array());
         $answer = "";
