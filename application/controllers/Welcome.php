@@ -44,7 +44,6 @@ class Welcome extends CI_Controller {
     function weather()
     {
   
-        
         $question = $this->input->get('q');
         //echo $question;  
         $str = preg_split("/[\s,?]+/",  $question);
@@ -65,10 +64,11 @@ class Welcome extends CI_Controller {
             $city.=$str[$i]." ";
         }
         
+        $city = trim($city,"?");
         $city = urlencode($city);
         
         //$country="IN"; //Two digit country code
-        $url="http://api.openweathermap.org/data/2.5/weather?q=".$city;
+        $url="http://api.openweathermap.org/data/2.5/weather?q=".$city."&units=metric&cnt=7&lang=en";
         
         $json=file_get_contents($url);
         //echo $json;
